@@ -36,10 +36,10 @@ bool GraphAnalyzer::isCycle() const {
 bool GraphAnalyzer::isStar() const {
     int V = graph.getVertexCount();
     if (V < 2) return false;
-
+    
     int centerCount = 0;
     int leafCount = 0;
-
+    
     for (int i = 0; i < V; i++){
         int d = graph.getDegree(i);
         if (d == V - 1) {
@@ -50,7 +50,7 @@ bool GraphAnalyzer::isStar() const {
             return false;
         }
     }
-
+    
     return centerCount == 1 && leafCount == V - 1;
 }
 
@@ -77,7 +77,7 @@ std::vector<std::string> GraphAnalyzer::analyze() const {
     }
     
     if (isStar()) {
-        results.push_back("Звездный S" + std::to_string(V));
+        results.push_back("Звездный S" + std::to_string(V - 1));
     }
 
     auto bipartiteInfo = graph.isBipartite();
