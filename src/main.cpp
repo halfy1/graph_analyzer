@@ -21,19 +21,15 @@ int main() {
         for (const auto& inputFile : inputFiles) {
             std::cout << "Обрабатывается файл: " << inputFile << std::endl;
             
-            // Чтение графа
             Graph graph = FileHandler::readGraphFromFile(inputFile);
             
-            // Анализ графа
             GraphAnalyzer analyzer(graph);
             auto results = analyzer.analyze();
             
-            // Формирование имени выходного файла
             std::string outputFile = outputDir + 
                                    std::filesystem::path(inputFile).stem().string() + 
                                    "_result.txt";
             
-            // Запись результатов
             FileHandler::writeResultsToFile(outputFile, results);
             
             std::cout << "Результаты записаны в: " << outputFile << std::endl;

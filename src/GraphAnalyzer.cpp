@@ -55,9 +55,26 @@ bool GraphAnalyzer::isStar() const {
 }
 
 bool GraphAnalyzer::isCompleteBipartite(int m, int n) const {
-    if (m * n != graph.getEdgeCount()) return false;
 
-    return true;
+    if (m == 0 || n == 0) return false;
+
+    if (m * n != graph.getEdgeCount()) return false;
+    
+    // В полном двудольном K(m,n):
+    // - m вершин имеют степень n
+    // - n вершин имеют степень m
+    
+    int countDegreeM = 0;
+    int countDegreeN = 0;
+    
+    for (int i = 0; i < graph.getVertexCount(); i++) {
+        int d = graph.getDegree(i);
+        if (d == m) countDegreeM++;
+        else if (d == n) countDegreeN++;
+        else return false;  // есть вершина с неправильной степенью
+    }
+    
+    return (countDegreeM == n && countDegreeN == m);
 }
 
 std::vector<std::string> GraphAnalyzer::analyze() const {
@@ -81,14 +98,17 @@ std::vector<std::string> GraphAnalyzer::analyze() const {
     }
 
     auto bipartiteInfo = graph.isBipartite();
-    if (bipartiteInfo.first) {
-        int m = bipartiteInfo.second.first;
-        int n = bipartiteInfo.second.second;
+    if (!isEmpty()) {
+        auto bipartiteInfo = graph.isBipartite();
+        if (bipartiteInfo.first) {
+            int m = bipartiteInfo.second.first;
+            int n = bipartiteInfo.second.second;
 
-        if (isCompleteBipartite(m, n)) {
-            results.push_back("Полный двудольный K" + std::to_string(m) + "," + std::to_string(n));
-        } else {
-            results.push_back("Двудольный");
+            if (isCompleteBipartite(m, n)) {
+                results.push_back("Полный двудольный K" + std::to_string(m) + "," + std::to_string(n));
+            } else {
+                results.push_back("Двудольный");
+            }
         }
     }
 
