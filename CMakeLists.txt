@@ -1,24 +1,22 @@
 cmake_minimum_required(VERSION 3.10)
-project(GraphAnalyzer)
+project(OrdTreeChecker)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2")
-endif()
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 set(SOURCES
     src/main.cpp
     src/Graph.cpp
-    src/GraphAnalyzer.cpp
-    src/FileHandler.cpp
+    src/OrdTreeChecker.cpp
 )
 
-add_executable(graph_analyzer ${SOURCES})
+set(HEADERS
+    src/Graph.h
+    src/OrdTreeChecker.h
+)
 
-target_include_directories(graph_analyzer PRIVATE src)
+add_executable(ordtree_checker ${SOURCES} ${HEADERS})
 
-if(WIN32)
-    target_link_libraries(graph_analyzer stdc++fs)
-endif()
+file(COPY ${CMAKE_SOURCE_DIR}/tests/ DESTINATION ${CMAKE_BINARY_DIR}/tests/)
